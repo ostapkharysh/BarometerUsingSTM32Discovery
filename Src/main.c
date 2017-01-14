@@ -96,6 +96,9 @@ int main(void)
   #define BMP180_PARAM_MG                 3038
   #define BMP180_PARAM_MH                -7357
   #define BMP180_PARAM_MI                 3791
+  #define BMP180_PARAM_BA                 407
+  #define BMP180_PARAM_BP                 0.00750061683;
+
 
   uint16_t temperature;
   uint16_t pressure;
@@ -143,7 +146,7 @@ int main(void)
 	  if (B7 < 0x80000000) p = (B7 << 1) / B4; else p = (B7 / B4) << 1;
 		p += ((((p >> 8) * (p >> 8) * BMP180_PARAM_MG) >> 16) + ((BMP180_PARAM_MH * p) >> 16) + BMP180_PARAM_MI) >> 4;
 
-		return p * 407 * 0.00750061683;
+		return p * BMP180_PARAM_BA * BMP180_PARAM_BP;
 	}
 
 

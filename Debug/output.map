@@ -4221,7 +4221,7 @@ OUTPUT(BAR_CUBE_PROJ.elf elf32-littlearm)
  .debug_loc     0x000052d4       0x58 Src/semihosting.o
  .debug_loc     0x0000532c      0x2df Src/syscalls.o
 
-.debug_macro    0x00000000    0x1e81c
+.debug_macro    0x00000000    0x1e828
  .debug_macro   0x00000000      0x2ea Drivers/CMSIS/Device/ST/STM32F3xx/Source/Templates/system_stm32f3xx.o
  .debug_macro   0x000002ea      0x89e Drivers/CMSIS/Device/ST/STM32F3xx/Source/Templates/system_stm32f3xx.o
  .debug_macro   0x00000b88       0x31 Drivers/CMSIS/Device/ST/STM32F3xx/Source/Templates/system_stm32f3xx.o
@@ -4288,42 +4288,42 @@ OUTPUT(BAR_CUBE_PROJ.elf elf32-littlearm)
  .debug_macro   0x0001bd67      0x2e4 Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_rcc_ex.o
  .debug_macro   0x0001c04b      0x2ee Src/gpio.o
  .debug_macro   0x0001c339      0x2f8 Src/i2c.o
- .debug_macro   0x0001c631      0x30a Src/main.o
- .debug_macro   0x0001c93b       0xec Src/semihosting.o
- .debug_macro   0x0001ca27      0x89e Src/semihosting.o
- .debug_macro   0x0001d2c5       0x58 Src/semihosting.o
- .debug_macro   0x0001d31d       0x22 Src/semihosting.o
- .debug_macro   0x0001d33f       0x35 Src/semihosting.o
- .debug_macro   0x0001d374       0x16 Src/semihosting.o
- .debug_macro   0x0001d38a      0x10e Src/semihosting.o
- .debug_macro   0x0001d498       0x8d Src/semihosting.o
- .debug_macro   0x0001d525       0x4a Src/semihosting.o
- .debug_macro   0x0001d56f       0x16 Src/semihosting.o
- .debug_macro   0x0001d585      0x329 Src/semihosting.o
- .debug_macro   0x0001d8ae       0x16 Src/semihosting.o
- .debug_macro   0x0001d8c4       0x29 Src/semihosting.o
- .debug_macro   0x0001d8ed      0x2e4 Src/stm32f3xx_hal_msp.o
- .debug_macro   0x0001dbd1      0x2ee Src/stm32f3xx_it.o
- .debug_macro   0x0001debf      0x206 Src/syscalls.o
- .debug_macro   0x0001e0c5       0x10 Src/syscalls.o
- .debug_macro   0x0001e0d5       0x22 Src/syscalls.o
- .debug_macro   0x0001e0f7       0x22 Src/syscalls.o
- .debug_macro   0x0001e119       0x3a Src/syscalls.o
- .debug_macro   0x0001e153       0x40 Src/syscalls.o
- .debug_macro   0x0001e193       0x65 Src/syscalls.o
- .debug_macro   0x0001e1f8      0x197 Src/syscalls.o
- .debug_macro   0x0001e38f       0x52 Src/syscalls.o
- .debug_macro   0x0001e3e1       0x16 Src/syscalls.o
- .debug_macro   0x0001e3f7       0x35 Src/syscalls.o
- .debug_macro   0x0001e42c       0x10 Src/syscalls.o
- .debug_macro   0x0001e43c       0x41 Src/syscalls.o
- .debug_macro   0x0001e47d      0x122 Src/syscalls.o
- .debug_macro   0x0001e59f       0x16 Src/syscalls.o
- .debug_macro   0x0001e5b5       0x16 Src/syscalls.o
- .debug_macro   0x0001e5cb       0x10 Src/syscalls.o
- .debug_macro   0x0001e5db      0x241 Src/syscalls.o
+ .debug_macro   0x0001c631      0x316 Src/main.o
+ .debug_macro   0x0001c947       0xec Src/semihosting.o
+ .debug_macro   0x0001ca33      0x89e Src/semihosting.o
+ .debug_macro   0x0001d2d1       0x58 Src/semihosting.o
+ .debug_macro   0x0001d329       0x22 Src/semihosting.o
+ .debug_macro   0x0001d34b       0x35 Src/semihosting.o
+ .debug_macro   0x0001d380       0x16 Src/semihosting.o
+ .debug_macro   0x0001d396      0x10e Src/semihosting.o
+ .debug_macro   0x0001d4a4       0x8d Src/semihosting.o
+ .debug_macro   0x0001d531       0x4a Src/semihosting.o
+ .debug_macro   0x0001d57b       0x16 Src/semihosting.o
+ .debug_macro   0x0001d591      0x329 Src/semihosting.o
+ .debug_macro   0x0001d8ba       0x16 Src/semihosting.o
+ .debug_macro   0x0001d8d0       0x29 Src/semihosting.o
+ .debug_macro   0x0001d8f9      0x2e4 Src/stm32f3xx_hal_msp.o
+ .debug_macro   0x0001dbdd      0x2ee Src/stm32f3xx_it.o
+ .debug_macro   0x0001decb      0x206 Src/syscalls.o
+ .debug_macro   0x0001e0d1       0x10 Src/syscalls.o
+ .debug_macro   0x0001e0e1       0x22 Src/syscalls.o
+ .debug_macro   0x0001e103       0x22 Src/syscalls.o
+ .debug_macro   0x0001e125       0x3a Src/syscalls.o
+ .debug_macro   0x0001e15f       0x40 Src/syscalls.o
+ .debug_macro   0x0001e19f       0x65 Src/syscalls.o
+ .debug_macro   0x0001e204      0x197 Src/syscalls.o
+ .debug_macro   0x0001e39b       0x52 Src/syscalls.o
+ .debug_macro   0x0001e3ed       0x16 Src/syscalls.o
+ .debug_macro   0x0001e403       0x35 Src/syscalls.o
+ .debug_macro   0x0001e438       0x10 Src/syscalls.o
+ .debug_macro   0x0001e448       0x41 Src/syscalls.o
+ .debug_macro   0x0001e489      0x122 Src/syscalls.o
+ .debug_macro   0x0001e5ab       0x16 Src/syscalls.o
+ .debug_macro   0x0001e5c1       0x16 Src/syscalls.o
+ .debug_macro   0x0001e5d7       0x10 Src/syscalls.o
+ .debug_macro   0x0001e5e7      0x241 Src/syscalls.o
 
-.debug_str      0x00000000    0xa4e0f
+.debug_str      0x00000000    0xa4e42
  .debug_str     0x00000000    0xa16be Drivers/CMSIS/Device/ST/STM32F3xx/Source/Templates/system_stm32f3xx.o
                               0xa1956 (size before relaxing)
  .debug_str     0x000a16be      0x646 Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal.o
@@ -4344,15 +4344,15 @@ OUTPUT(BAR_CUBE_PROJ.elf elf32-littlearm)
                               0xa1849 (size before relaxing)
  .debug_str     0x000a3abd       0x73 Src/i2c.o
                               0xa1e11 (size before relaxing)
- .debug_str     0x000a3b30      0x113 Src/main.o
-                              0xa256d (size before relaxing)
- .debug_str     0x000a3c43      0x2b6 Src/semihosting.o
+ .debug_str     0x000a3b30      0x146 Src/main.o
+                              0xa25a0 (size before relaxing)
+ .debug_str     0x000a3c76      0x2b6 Src/semihosting.o
                                0x5291 (size before relaxing)
- .debug_str     0x000a3ef9       0x27 Src/stm32f3xx_hal_msp.o
+ .debug_str     0x000a3f2c       0x27 Src/stm32f3xx_hal_msp.o
                               0xa1caf (size before relaxing)
- .debug_str     0x000a3f20       0x8f Src/stm32f3xx_it.o
+ .debug_str     0x000a3f53       0x8f Src/stm32f3xx_it.o
                               0xa1868 (size before relaxing)
- .debug_str     0x000a3faf      0xe60 Src/syscalls.o
+ .debug_str     0x000a3fe2      0xe60 Src/syscalls.o
                                0x6fb6 (size before relaxing)
 
 .comment        0x00000000       0xdc

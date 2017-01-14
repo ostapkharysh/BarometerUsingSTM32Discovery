@@ -91,10 +91,15 @@ int main(void)
 
 
 
- int temperature;
- int B5 = 0;
 
-  //uint32_t pressure;
+  /* BMP180 Pressure calculation constants */
+  #define BMP180_PARAM_MG                 3038
+  #define BMP180_PARAM_MH                -7357
+  #define BMP180_PARAM_MI                 3791
+
+  uint16_t temperature;
+  uint16_t pressure;
+
 
   uint8_t Buffer[8];
 
@@ -110,15 +115,37 @@ int main(void)
   int16_t MC=0;
   int16_t MD=0;
 
-
   int barRegisters[11] = {0xAA, 0xAC, 0xAE, 0xB0, 0xB2, 0xB4, 0xB6, 0xB8, 0xBa, 0xBC, 0xBE};
   int16_t dataINTHolders[11] = {AC1, AC2, AC3, 1, 1, 1, B1, B2, MB, MC, MD}; // 1 1 1  take the place for other data type elements
   uint16_t dataUINTHolders[3] = {AC4, AC5, AC6};
 
-  int CalculateTempBAR(int data, int AC6, int AC5, int MC, int MD){
-	  B5 = (data-AC6)*(AC5/32768) + MC*2048/(data-AC6)*(AC5/32768)+MD;
-	 return ((data-AC6)*(AC5/32768) + MC*2048/(data-AC6)*(AC5/32768)+MD + 8)/16;
-  	  }
+
+  int CalculateTempBAR(uint16_t data, uint16_t AC6, uint16_t AC5, int16_t MC, int16_t MD){
+	  uint16_t B5;
+	  B5 = ((data - AC6)*AC5/32768) + MC*2048/((data - AC6)*AC5/32768) + MD;
+  	 return B5;
+    	  }
+  int CalculateUserTempBAR(uint16_t data, uint16_t AC6, uint16_t AC5, int16_t MC, int16_t MD){
+	  return (CalculateTempBAR(data, AC6, AC5, MC, MD) + 8)/16 - 100;
+  }
+
+
+  int32_t CalculatePressBAR(uint32_t data, uint32_t AC6, uint32_t AC5, int32_t MC, int32_t MD, int32_t B2, uint8_t oss){
+	  int32_t B3, B6, X3, p, X1, X2;
+	  uint32_t B4, B7, B5;
+	  B5 = CalculateTempBAR(data, AC6, AC5, MC, MD);
+	  B6 = B5 - 4000;
+	  X3 = (((int32_t) B2 *((B6 * B6) >> 12))>> 11) +((AC2 * B6) >> 11);
+	  B3 = ((((int32_t)AC1 * 4 + X3) << oss) + 2) >> 2;
+	  X3 = (((AC3 * B6) >> 13) + ((B1 * ((B6 * B6) >> 12)) >> 16) + 2) >> 2;
+	  B4 = (AC4 * (uint32_t)(X3 + 32768)) >> 15;
+	  B7 = ((uint32_t)data - B3) * (50000 >> oss);
+	  if (B7 < 0x80000000) p = (B7 << 1) / B4; else p = (B7 / B4) << 1;
+		p += ((((p >> 8) * (p >> 8) * BMP180_PARAM_MG) >> 16) + ((BMP180_PARAM_MH * p) >> 16) + BMP180_PARAM_MI) >> 4;
+
+		return p * 407 * 0.00750061683;
+	}
+
 
 void FullfillDataArrays(){
   int count = 0;
@@ -126,65 +153,18 @@ void FullfillDataArrays(){
 	HAL_I2C_Mem_Read(&hi2c2, (uint16_t) (0xEE), (uint16_t) barRegisters[i], I2C_MEMADD_SIZE_8BIT, Buffer, 2, 500);
 	if(i == 3 || i == 4 || i == 5){
 		 dataUINTHolders[count] = (Buffer[0]<<8) | (Buffer[1]);
-		 printf("%d \n",dataUINTHolders[count]);
+		 //printf("%d \n",dataUINTHolders[count]);
 		 count++;
 	}
 	else{
 		 dataINTHolders[i] = (Buffer[0]<<8) | (Buffer[1]);
-		 printf("%d \n",dataINTHolders[i]);
+		 //printf("%d \n",dataINTHolders[i]);
 	}
-}
+ }
 
 }
-
-/*
-HAL_I2C_Mem_Read(&hi2c2, (uint16_t) (0xEE), (uint16_t)(0xAC), I2C_MEMADD_SIZE_8BIT, Buffer1, 2, 500);
-	  AC2 = (Buffer1[0]<<8) | (Buffer1[1]);
-	  printf("%d \n", AC2);
-
-HAL_I2C_Mem_Read(&hi2c2, (uint16_t) (0xEE), (uint16_t)(0xAE), I2C_MEMADD_SIZE_8BIT, Buffer1, 2, 500);
-	  AC3 = (Buffer1[0]<<8) | (Buffer1[1]);
-	  printf("%d \n", AC3);
-
-HAL_I2C_Mem_Read(&hi2c2, (uint16_t) (0xEE), (uint16_t)(0xB0), I2C_MEMADD_SIZE_8BIT, Buffer1, 2, 500);
-	  AC4 = (Buffer1[0]<<8) | (Buffer1[1]);
-	  printf("%d \n", AC4);
-
-HAL_I2C_Mem_Read(&hi2c2, (uint16_t) (0xEE), (uint16_t)(0xB2), I2C_MEMADD_SIZE_8BIT, Buffer1, 2, 500);
-	  AC5 = (Buffer1[0]<<8) | (Buffer1[1]);
-	  printf("%d \n", AC5);
-
-HAL_I2C_Mem_Read(&hi2c2, (uint16_t) (0xEE), (uint16_t)(0xB4), I2C_MEMADD_SIZE_8BIT, Buffer1, 2, 500);
-	  AC6 = (Buffer1[0]<<8) | (Buffer1[1]);
-	  printf("%d \n", AC6);
-
-HAL_I2C_Mem_Read(&hi2c2, (uint16_t) (0xEE), (uint16_t)(0xB6), I2C_MEMADD_SIZE_8BIT, Buffer1, 2, 500);
-	  B1 = (Buffer1[0]<<8) | (Buffer1[1]);
-	  printf("%d \n", B1);
-
-HAL_I2C_Mem_Read(&hi2c2, (uint16_t) (0xEE), (uint16_t)(0xB8), I2C_MEMADD_SIZE_8BIT, Buffer1, 2, 500);
-	  B2 = (Buffer1[0]<<8) | (Buffer1[1]);
-	  printf("%d \n", B2);
-
-HAL_I2C_Mem_Read(&hi2c2, (uint16_t) (0xEE), (uint16_t)(0xBa), I2C_MEMADD_SIZE_8BIT, Buffer1, 2, 500);
-	  MB = (Buffer1[0]<<8) | (Buffer1[1]);
-	  printf("%d \n", MB);
-
-HAL_I2C_Mem_Read(&hi2c2, (uint16_t) (0xEE), (uint16_t)(0xBC), I2C_MEMADD_SIZE_8BIT, Buffer1, 2, 500);
-	  MC = (Buffer1[0]<<8) | (Buffer1[1]);
-	  printf("%d \n", MC);
-
-HAL_I2C_Mem_Read(&hi2c2, (uint16_t) (0xEE), (uint16_t)(0xBE), I2C_MEMADD_SIZE_8BIT, Buffer1, 2, 500);
-	  MD = (Buffer1[0]<<8) | (Buffer1[1]);
-	  printf("%d \n", MD);
-*/
 
  FullfillDataArrays(); // fills the arrays data for temperature and pressure manipulations
- printf("ALLL STABLE DATA ENDED");
-
-
-
-
 
   while (1)
   {
@@ -193,17 +173,10 @@ HAL_I2C_Mem_Read(&hi2c2, (uint16_t) (0xEE), (uint16_t)(0xBE), I2C_MEMADD_SIZE_8B
 	  HAL_Delay(450);
 	  HAL_I2C_Mem_Read(&hi2c2, (uint16_t) (0xEE), (uint16_t)(0xF6),  I2C_MEMADD_SIZE_8BIT, Buffer, 2, 500);
 	  	  temperature = (Buffer[0]<<8) | (Buffer[1]);
-	  	  printf("%d \n", temperature);
-	  	  printf("%d \n", CalculateTempBAR(temperature, dataUINTHolders[2], dataUINTHolders[1], dataINTHolders[9], dataINTHolders[10]));
-	  	  /*
-	  Buffer1[0] =  (uint16_t) 0x34;
-	  HAL_I2C_Mem_Write(&hi2c2, (uint16_t) (0xEE), (uint16_t)(0xF4), I2C_MEMADD_SIZE_8BIT, Buffer1, 1, 500);
-	  HAL_Delay(450);
-      HAL_I2C_Mem_Read(&hi2c2, (uint16_t) (0xEE), (uint16_t)(0xF6), I2C_MEMADD_SIZE_8BIT, Buffer1, 2, 500);
-		  pressure = (Buffer1[0]<<8) | (Buffer1[1]);
-		  printf("%d \n", pressure);
+	  	  //printf("%d \n", temperature);
+	  	  printf("%d \n", CalculateUserTempBAR(temperature, dataUINTHolders[2], dataUINTHolders[1], dataINTHolders[9], dataINTHolders[10]));
+	  	  printf("%d \n", CalculatePressBAR(temperature, dataUINTHolders[2], dataUINTHolders[1], dataINTHolders[9], dataINTHolders[10], dataINTHolders[7], 0));
 
-		*/
 
   /* USER CODE END WHILE */
 
